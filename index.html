@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Aeman weds Aquib | Wedding Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="locked-scroll">
+
+  <!-- Desktop Phone Wrapper for Mobile-First Preview -->
+  <div class="mobile-shell" id="appShell">
+
+    <!-- Floating Replay Controls -->
+    <button class="replay-btn hidden" id="replayBtn" aria-label="Replay Envelope & Curtain">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+        <path d="M3 3v5h5"/>
+      </svg>
+      <span>Replay Intro</span>
+    </button>
+
+    <!-- ==========================================
+         STAGE 1: STAMPED ENVELOPE OVERLAY (Sketch 1)
+         ========================================== -->
+    <div class="envelope-overlay" id="envelopeOverlay">
+      <!-- Left Vertical Flap -->
+      <div class="envelope-flap envelope-left">
+        <div class="paper-pattern"></div>
+        <div class="seam-trim seam-trim-left"></div>
+      </div>
+
+      <!-- Right Vertical Flap -->
+      <div class="envelope-flap envelope-right">
+        <div class="paper-pattern"></div>
+        <div class="seam-trim seam-trim-right"></div>
+      </div>
+
+      <!-- Center Red Wax Stamp Button -->
+      <button class="wax-seal-btn" id="waxSealBtn" aria-label="Open Wedding Invitation">
+        <div class="wax-seal-outer">
+          <svg class="wax-seal-svg" viewBox="0 0 200 200">
+            <defs>
+              <radialGradient id="waxGrad" cx="38%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#e3342f" />
+                <stop offset="45%" stop-color="#b91c1c" />
+                <stop offset="85%" stop-color="#7f1d1d" />
+                <stop offset="100%" stop-color="#581111" />
+              </radialGradient>
+              <radialGradient id="waxInnerGrad" cx="60%" cy="65%" r="60%">
+                <stop offset="0%" stop-color="#991b1b" />
+                <stop offset="70%" stop-color="#dc2626" />
+                <stop offset="100%" stop-color="#7f1d1d" />
+              </radialGradient>
+              <filter id="waxShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#2a0808" flood-opacity="0.45"/>
+              </filter>
+            </defs>
+            <!-- Organic Ruffled Wax Edge matching Sketch 1 -->
+            <path filter="url(#waxShadow)" fill="url(#waxGrad)" d="M100,12 C115,10 126,20 140,19 C155,18 166,28 173,42 C180,55 190,65 188,82 C186,97 192,112 184,127 C176,141 174,156 162,166 C149,176 134,179 120,185 C105,191 90,189 75,184 C60,179 44,178 34,166 C24,154 22,138 15,124 C8,110 12,94 14,79 C16,64 18,47 29,36 C40,25 56,23 70,17 C82,12 88,14 100,12 Z" />
+            <!-- Inner Stamp Rim -->
+            <circle cx="100" cy="100" r="64" fill="url(#waxInnerGrad)" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.55" />
+            <circle cx="100" cy="100" r="56" fill="none" stroke="#fcd34d" stroke-width="1" stroke-dasharray="3 3" stroke-opacity="0.6" />
+            <!-- Wreath / Floral Filigree -->
+            <path d="M62,120 C52,95 65,65 100,56 C135,65 148,95 138,120" fill="none" stroke="#fde68a" stroke-width="1.2" stroke-opacity="0.5" />
+            <!-- Monogram A & A -->
+            <text x="100" y="110" text-anchor="middle" fill="#fef3c7" font-family="'Cinzel', serif" font-size="30" font-weight="600" letter-spacing="2" style="text-shadow: 0 2px 3px rgba(0,0,0,0.5);">A&amp;A</text>
+          </svg>
+        </div>
+        <span class="tap-hint">Tap Seal to Open</span>
+      </button>
+    </div>
+
+    <!-- ==========================================
+         MAIN SCROLLABLE INVITATION CONTENT
+         ========================================== -->
+    <main class="invitation-scroll" id="invitationScroll">
+
+      <!-- ==========================================
+           PAGE 1: CURTAIN OPENING + GARDEN & FOUNTAIN (Sketch 2)
+           ========================================== -->
+      <section class="page-section hero-garden-section" id="heroSection">
+        
+        <!-- Curtain Stage Overlay (Parts Left & Right after Envelope opens) -->
+        <div class="curtain-stage" id="curtainStage">
+          <!-- Top Scalloped Pelmet / Valance (matches the top curves in Sketch 2) -->
+          <div class="curtain-valance">
+            <svg viewBox="0 0 400 95" preserveAspectRatio="none" class="valance-svg">
+              <defs>
+                <linearGradient id="curtainTopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#5E9E7E" />
+                  <stop offset="50%" stop-color="#79BD9A" />
+                  <stop offset="100%" stop-color="#4D8C6D" />
+                </linearGradient>
+              </defs>
+              <path d="M0,0 L400,0 L400,35 Q340,90 275,38 Q200,98 125,38 Q60,90 0,35 Z" fill="url(#curtainTopGrad)" />
+              <path d="M0,35 Q60,90 125,38 Q200,98 275,38 Q340,90 400,35" fill="none" stroke="#E3F3EA" stroke-width="3" />
+            </svg>
+          </div>
+
+          <!-- Left Draped Curtain -->
+          <div class="curtain-panel curtain-left">
+            <svg viewBox="0 0 220 800" preserveAspectRatio="none" class="curtain-svg">
+              <defs>
+                <linearGradient id="curtainLeftGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#589A79" />
+                  <stop offset="30%" stop-color="#79BD9A" />
+                  <stop offset="60%" stop-color="#66AB88" />
+                  <stop offset="85%" stop-color="#A8DBA8" />
+                  <stop offset="100%" stop-color="#4D8C6D" />
+                </linearGradient>
+              </defs>
+              <path d="M0,0 L215,0 C190,180 125,320 95,470 C75,580 82,690 72,775 Q52,765 36,780 Q18,765 0,780 Z" fill="url(#curtainLeftGrad)" />
+              <path d="M215,0 C190,180 125,320 95,470 C75,580 82,690 72,775" fill="none" stroke="#E3F3EA" stroke-width="3.5" />
+              <path d="M0,455 Q52,475 96,465" fill="none" stroke="#CBEAD8" stroke-width="5" />
+              <circle cx="96" cy="465" r="7" fill="#F4FAF6" />
+            </svg>
+          </div>
+
+          <!-- Right Draped Curtain -->
+          <div class="curtain-panel curtain-right">
+            <svg viewBox="0 0 220 800" preserveAspectRatio="none" class="curtain-svg">
+              <defs>
+                <linearGradient id="curtainRightGrad" x1="100%" y1="0%" x2="0%" y2="0%">
+                  <stop offset="0%" stop-color="#589A79" />
+                  <stop offset="30%" stop-color="#79BD9A" />
+                  <stop offset="60%" stop-color="#66AB88" />
+                  <stop offset="85%" stop-color="#A8DBA8" />
+                  <stop offset="100%" stop-color="#4D8C6D" />
+                </linearGradient>
+              </defs>
+              <path d="M220,0 L5,0 C30,180 95,320 125,470 C145,580 138,690 148,775 Q168,765 184,780 Q202,765 220,780 Z" fill="url(#curtainRightGrad)" />
+              <path d="M5,0 C30,180 95,320 125,470 C145,580 138,690 148,775" fill="none" stroke="#E3F3EA" stroke-width="3.5" />
+              <path d="M220,455 Q168,475 124,465" fill="none" stroke="#CBEAD8" stroke-width="5" />
+              <circle cx="124" cy="465" r="7" fill="#F4FAF6" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Unified SVG Scene: Garden Illustration + Pixel-Locked Fountain Water Animation (768x1376) -->
+        <div class="garden-backdrop">
+          <svg class="garden-scene-svg" viewBox="0 0 768 1376" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="waterCascadeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.92" />
+                <stop offset="50%" stop-color="#e0f2fe" stop-opacity="0.75" />
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2" />
+              </linearGradient>
+              <filter id="waterGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2.2" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Base Watercolor Mughal Garden & Fountain Image with Soft #79BD9A Jade Wash -->
+            <image href="assets/garden-bg.jpg" x="0" y="0" width="768" height="1376" />
+            <rect x="0" y="0" width="768" height="1376" fill="#79BD9A" opacity="0.18" style="mix-blend-mode: color;" />
+            <rect x="0" y="0" width="768" height="1376" fill="#E3F3EA" opacity="0.12" style="mix-blend-mode: soft-light;" />
+
+            <!-- =========================================================
+                 PIXEL-LOCKED WATER ANIMATION OVER THE PAINTED FOUNTAIN
+                 Exact image coordinates: Center X = 384
+                 Top Finial = 746 | Tier 1 = 782 | Tier 2 = 832 | Tier 3 = 900 | Pool = 1016
+                 ========================================================= -->
+            <g class="fountain-water-layer" filter="url(#waterGlow)">
+
+              <!-- Top Finial Plume & Arching Spouts (x=384, y=746 -> Tier 1 y=782) -->
+              <path class="water-jet-top" d="M384,748 L384,718" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+              <path class="water-arc" d="M384,724 Q370,730 362,776" fill="none" stroke="url(#waterCascadeGrad)" stroke-width="2.6" stroke-linecap="round" />
+              <path class="water-arc" d="M384,724 Q398,730 406,776" fill="none" stroke="url(#waterCascadeGrad)" stroke-width="2.6" stroke-linecap="round" />
+
+              <!-- Tier 1 -> Tier 2 Falling Water Sheet (y=784 to y=832, x=360..408) -->
+              <g class="tier-cascade tier-1">
+                <line class="cascade-drop c-fast" x1="362" y1="784" x2="356" y2="830" />
+                <line class="cascade-drop c-med"  x1="373" y1="786" x2="370" y2="832" />
+                <line class="cascade-drop c-slow" x1="384" y1="787" x2="384" y2="833" />
+                <line class="cascade-drop c-med"  x1="395" y1="786" x2="398" y2="832" />
+                <line class="cascade-drop c-fast" x1="406" y1="784" x2="412" y2="830" />
+              </g>
+
+              <!-- Tier 2 -> Tier 3 Falling Water Sheet (y=838 to y=900, x=336..432) -->
+              <g class="tier-cascade tier-2">
+                <line class="cascade-drop c-med"  x1="338" y1="836" x2="330" y2="898" />
+                <line class="cascade-drop c-fast" x1="352" y1="840" x2="346" y2="900" />
+                <line class="cascade-drop c-slow" x1="368" y1="842" x2="365" y2="902" />
+                <line class="cascade-drop c-fast" x1="384" y1="843" x2="384" y2="902" />
+                <line class="cascade-drop c-slow" x1="400" y1="842" x2="403" y2="902" />
+                <line class="cascade-drop c-fast" x1="416" y1="840" x2="422" y2="900" />
+                <line class="cascade-drop c-med"  x1="430" y1="836" x2="438" y2="898" />
+              </g>
+
+              <!-- Tier 3 -> Main Lotus Pool Grand Waterfall (y=906 to y=1020, x=298..470) -->
+              <g class="tier-cascade tier-3">
+                <line class="cascade-drop c-fast" x1="299" y1="900" x2="295" y2="1012" />
+                <line class="cascade-drop c-slow" x1="312" y1="906" x2="309" y2="1018" />
+                <line class="cascade-drop c-med"  x1="326" y1="910" x2="324" y2="1022" />
+                <line class="cascade-drop c-fast" x1="342" y1="914" x2="341" y2="1025" />
+                <line class="cascade-drop c-slow" x1="360" y1="916" x2="360" y2="1026" />
+                <line class="cascade-drop c-med"  x1="408" y1="916" x2="408" y2="1026" />
+                <line class="cascade-drop c-fast" x1="426" y1="914" x2="427" y2="1025" />
+                <line class="cascade-drop c-med"  x1="442" y1="910" x2="444" y2="1022" />
+                <line class="cascade-drop c-slow" x1="456" y1="906" x2="459" y2="1018" />
+                <line class="cascade-drop c-fast" x1="469" y1="900" x2="473" y2="1012" />
+              </g>
+
+              <!-- Main Pool Shimmering Concentric Ripples (cx=384, cy=1018) -->
+              <ellipse class="pool-ripple pr-1" cx="384" cy="1018" rx="68" ry="18" />
+              <ellipse class="pool-ripple pr-2" cx="384" cy="1020" rx="108" ry="28" />
+              <ellipse class="pool-ripple pr-3" cx="384" cy="1022" rx="145" ry="38" />
+
+              <!-- Splash Mist Drops at Pool Surface -->
+              <circle class="mist-bubble m-1" cx="305" cy="1012" r="3" />
+              <circle class="mist-bubble m-2" cx="340" cy="1024" r="2.5" />
+              <circle class="mist-bubble m-3" cx="384" cy="1028" r="3" />
+              <circle class="mist-bubble m-1" cx="428" cy="1024" r="2.5" />
+              <circle class="mist-bubble m-2" cx="462" cy="1012" r="3" />
+
+              <!-- Side Canal Mini-Fountains (Left & Right Water Channels) -->
+              <!-- Left Foreground Jet (x=88, y=928) -->
+              <line class="canal-jet" x1="88" y1="930" x2="88" y2="882" />
+              <ellipse class="pool-ripple pr-1" cx="88" cy="932" rx="26" ry="9" />
+              <!-- Left Mid Jet (x=185, y=842) -->
+              <line class="canal-jet" x1="185" y1="844" x2="185" y2="806" />
+              <ellipse class="pool-ripple pr-2" cx="185" cy="846" rx="16" ry="6" />
+              <!-- Right Foreground Jet (x=680, y=928) -->
+              <line class="canal-jet" x1="680" y1="930" x2="680" y2="882" />
+              <ellipse class="pool-ripple pr-1" cx="680" cy="932" rx="26" ry="9" />
+              <!-- Right Mid Jet (x=583, y=842) -->
+              <line class="canal-jet" x1="583" y1="844" x2="583" y2="806" />
+              <ellipse class="pool-ripple pr-2" cx="583" cy="846" rx="16" ry="6" />
+            </g>
+          </svg>
+
+          <!-- Floating Golden Fireflies / Sunbeams -->
+          <div class="garden-particles" id="gardenParticles"></div>
+        </div>
+
+        <!-- Hero Content Positioned Cleanly in the Sunlit Sky Arch Above the Fountain -->
+        <div class="hero-content">
+          <div class="hero-top-arch-group">
+            <div class="bismillah-header">
+              <p class="bismillah-arabic" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+              <p class="bismillah-english">In the name of Allah, the Most Gracious, the Most Merciful</p>
+            </div>
+
+            <div class="couple-names-block">
+              <h1 class="bride-groom-name name-primary">Aeman</h1>
+              <span class="weds-script">weds</span>
+              <h1 class="bride-groom-name name-secondary">Aquib</h1>
+            </div>
+          </div>
+
+          <a href="#scratchSection" class="scroll-cue" aria-label="Scroll down to Scratch to Reveal">
+            <span class="scroll-cue-text">Scroll to Reveal the Date</span>
+            <span class="scroll-chevron">↓</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           PAGE 2: SCRATCH TO REVEAL HEART + SAVE THE DATE
+           ========================================== -->
+      <section class="page-section scratch-section" id="scratchSection">
+        <div class="section-card">
+          <div class="ornament-divider">✦ ✧ ✦</div>
+          <h2 class="section-title">Scratch to Reveal</h2>
+          <p class="section-subtitle" id="scratchSubtitle">Brush away the shimmering foil to uncover the day our forever begins</p>
+
+          <!-- Heart Container -->
+          <div class="scratch-heart-wrapper" id="scratchHeartWrapper">
+            <svg width="0" height="0" style="position:absolute">
+              <defs>
+                <clipPath id="heartClipPath" clipPathUnits="objectBoundingBox">
+                  <path d="M0.5,0.92 C0.5,0.92 0.06,0.65 0.06,0.33 C0.06,0.15 0.20,0.04 0.35,0.04 C0.44,0.04 0.5,0.12 0.5,0.17 C0.5,0.12 0.56,0.04 0.65,0.04 C0.80,0.04 0.94,0.15 0.94,0.33 C0.94,0.65 0.5,0.92 0.5,0.92 Z" />
+                </clipPath>
+              </defs>
+            </svg>
+
+            <!-- Decorative #79BD9A Jade Heart Frame Outline -->
+            <svg class="heart-border-svg" viewBox="0 0 300 280">
+              <defs>
+                <linearGradient id="heartGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#79BD9A" />
+                  <stop offset="50%" stop-color="#CBEAD8" />
+                  <stop offset="100%" stop-color="#4D8C6D" />
+                </linearGradient>
+              </defs>
+              <path d="M150,257.6 C150,257.6 18,182 18,92.4 C18,42 60,11.2 105,11.2 C132,11.2 150,33.6 150,47.6 C150,33.6 168,11.2 195,11.2 C240,11.2 282,42 282,92.4 C282,182 150,257.6 150,257.6 Z"
+                    fill="none" stroke="url(#heartGoldGrad)" stroke-width="5" />
+            </svg>
+
+            <!-- Clipped Heart Surface -->
+            <div class="heart-clip-container">
+              <!-- Hidden Date Layer Underneath -->
+              <div class="heart-revealed-content" id="heartRevealedContent">
+                <span class="reveal-sparkle">✨ Nikah Ceremony ✨</span>
+                <p class="reveal-day">Sunday</p>
+                <h3 class="reveal-date">January 10th</h3>
+                <p class="reveal-year">2027</p>
+                <span class="reveal-hijri">2 Sha'ban 1448 AH</span>
+              </div>
+
+              <!-- Interactive Gold Foil Canvas on Top -->
+              <canvas id="scratchCanvas" width="300" height="280" aria-label="Scratch off golden heart to reveal wedding date"></canvas>
+            </div>
+          </div>
+
+          <div class="scratch-status" id="scratchStatus">
+            <span id="scratchHintText">✨ Glide your finger across the heart</span>
+            <button type="button" class="quick-reveal-link" id="quickRevealBtn">or tap to unveil</button>
+          </div>
+
+          <!-- Save the Date Button Below Heart -->
+          <div class="save-date-actions">
+            <button type="button" class="btn-save-date" id="saveDateBtnTop">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Save the Date</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           PAGE 3: COUNTDOWN TO FOREVER IN BOXES (Sketch 3)
+           ========================================== -->
+      <section class="page-section countdown-section" id="countdownSection">
+        <div class="section-card">
+          <div class="ornament-divider">✦ ✧ ✦</div>
+          <h2 class="section-title">Countdown to Forever</h2>
+          <p class="section-subtitle">Every moment brings us closer to our blessed union</p>
+
+          <!-- 4 Countdown Boxes (Matches Sketch 3) -->
+          <div class="countdown-boxes" role="timer" aria-live="polite">
+            <div class="countdown-box">
+              <span class="countdown-number" id="cdDays">00</span>
+              <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-box">
+              <span class="countdown-number" id="cdHours">00</span>
+              <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-box">
+              <span class="countdown-number" id="cdMinutes">00</span>
+              <span class="countdown-label">Mins</span>
+            </div>
+            <div class="countdown-box">
+              <span class="countdown-number" id="cdSeconds">00</span>
+              <span class="countdown-label">Secs</span>
+            </div>
+          </div>
+
+          <!-- Rectangular Calendar Button below boxes (Matches Sketch 3) -->
+          <button type="button" class="btn-calendar-sketch" id="saveDateBtnCountdown">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span>Calendar — Save Wedding Date</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           PAGE 4: TIMELINE OF EVENTS
+           ========================================== -->
+      <section class="page-section timeline-section" id="timelineSection">
+        <div class="section-card">
+          <div class="ornament-divider">✦ ✧ ✦</div>
+          <h2 class="section-title">Wedding Celebrations</h2>
+          <p class="section-subtitle">Join us across four joyous days of love, prayers &amp; festivities</p>
+
+          <div class="timeline-track">
+            <!-- Event 1: Haldi -->
+            <article class="timeline-item">
+              <div class="timeline-badge haldi-badge" aria-hidden="true">🌼</div>
+              <div class="timeline-card">
+                <span class="timeline-date-pill">Friday • 8th Jan 2027</span>
+                <h3 class="timeline-event-title">Haldi</h3>
+                <p class="timeline-event-desc">Golden marigold petals, blessings &amp; joyful traditions in the morning sun.</p>
+                <span class="timeline-time">11:00 AM Onwards</span>
+              </div>
+            </article>
+
+            <!-- Event 2: Mehndi -->
+            <article class="timeline-item">
+              <div class="timeline-badge mehndi-badge" aria-hidden="true">🌿</div>
+              <div class="timeline-card">
+                <span class="timeline-date-pill">Saturday • 9th Jan 2027</span>
+                <h3 class="timeline-event-title">Mehndi</h3>
+                <p class="timeline-event-desc">An evening of intricate henna artistry, folk melodies &amp; vibrant family festivities.</p>
+                <span class="timeline-time">6:30 PM Onwards</span>
+              </div>
+            </article>
+
+            <!-- Event 3: Wedding (Nikah) -->
+            <article class="timeline-item timeline-item-featured">
+              <div class="timeline-badge wedding-badge" aria-hidden="true">💍</div>
+              <div class="timeline-card">
+                <span class="timeline-date-pill featured-pill">Sunday • 10th Jan 2027</span>
+                <h3 class="timeline-event-title">Wedding (Nikah)</h3>
+                <p class="timeline-event-desc">The sacred Nikah ceremony uniting Aeman &amp; Aquib in faith and love.</p>
+                <span class="timeline-venue-tag">📍 Akka Garden Marriage Hall</span>
+              </div>
+            </article>
+
+            <!-- Event 4: Reception (Walima) -->
+            <article class="timeline-item">
+              <div class="timeline-badge reception-badge" aria-hidden="true">✨</div>
+              <div class="timeline-card">
+                <span class="timeline-date-pill">Tuesday • 12th Jan 2027</span>
+                <h3 class="timeline-event-title">Reception</h3>
+                <p class="timeline-event-desc">Grand Walima reception celebrating the newlyweds with family and friends.</p>
+                <span class="timeline-venue-tag">📍 Madina Garden</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           PAGE 5: VENUES & ROUNDED SQUARE MAP
+           ========================================== -->
+      <section class="page-section venue-section" id="venueSection">
+        <div class="section-card">
+          <div class="ornament-divider">✦ ✧ ✦</div>
+          <h2 class="section-title">Venues &amp; Locations</h2>
+          <p class="section-subtitle">Select an event below to view the venue &amp; directions</p>
+
+          <!-- Venue Switcher Tabs (Wedding vs Reception) -->
+          <div class="venue-tabs" role="tablist" aria-label="Wedding and Reception Venues">
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              class="venue-tab active"
+              id="tabWeddingVenue"
+              data-venue="wedding">
+              <span class="venue-tab-event">Wedding • 10th Jan</span>
+              <span class="venue-tab-name">Akka Garden</span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              class="venue-tab"
+              id="tabReceptionVenue"
+              data-venue="reception">
+              <span class="venue-tab-event">Reception • 12th Jan</span>
+              <span class="venue-tab-name">Madina Garden</span>
+            </button>
+          </div>
+
+          <!-- Active Venue Details Card -->
+          <div class="venue-details-box" id="venueDetailsBox">
+            <span class="venue-event-badge" id="venueEventBadge">Wedding Ceremony • Sunday, 10th Jan 2027</span>
+            <h3 class="venue-name" id="venueTitle">Akka Garden Marriage Hall</h3>
+            <p class="venue-address" id="venueAddress">Azad Nagar, Mango, Jamshedpur, Jharkhand</p>
+          </div>
+
+          <!-- Rounded Square Map of the Selected Location -->
+          <div class="rounded-square-map-wrapper">
+            <iframe
+              id="venueMapIframe"
+              title="Wedding Venue Location Map"
+              class="rounded-square-map"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://maps.google.com/maps?q=22.841519,86.2030102&amp;hl=en&amp;z=16&amp;output=embed">
+            </iframe>
+            <div class="map-pin-badge">
+              <span id="mapPinLabel">📍 Akka Garden Marriage Hall</span>
+            </div>
+          </div>
+
+          <div class="venue-actions">
+            <a
+              id="venueDirectionsBtn"
+              href="https://www.google.com/maps/place/Akka+Garden/@22.8415239,86.2004353,17z/data=!3m1!4b1!4m6!3m5!1s0x39f5e3c6f487b9d3:0x167efa7738817ed!8m2!3d22.841519!4d86.2030102!16s%2Fg%2F11c6lmwcch?entry=ttu&amp;g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-directions">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+              </svg>
+              <span id="venueDirectionsText">Directions to Akka Garden</span>
+            </a>
+          </div>
+
+          <footer class="invitation-footer">
+            <p class="dua-quote">“And We created you in pairs”</p>
+            <p class="dua-ref">— Surah An-Naba (78:8)</p>
+            <p class="couple-monogram-footer">Aeman &amp; Aquib • #AemanWedsAquib</p>
+          </footer>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ==========================================
+         CALENDAR MODAL (Google Calendar + Apple/iOS .ics)
+         ========================================== -->
+    <div class="calendar-modal-backdrop hidden" id="calendarModal" role="dialog" aria-modal="true" aria-labelledby="calendarModalTitle">
+      <div class="calendar-modal-sheet">
+        <button class="modal-close-btn" id="closeCalendarModal" aria-label="Close calendar menu">✕</button>
+        <div class="modal-icon">📅</div>
+        <h3 id="calendarModalTitle" class="modal-title">Save the Wedding Date</h3>
+        <p class="modal-subtitle">Aeman weds Aquib • Sunday, Jan 10th, 2027</p>
+
+        <div class="modal-actions">
+          <a id="googleCalLink" href="#" target="_blank" rel="noopener noreferrer" class="modal-btn modal-btn-primary">
+            <span>Add to Google Calendar</span>
+          </a>
+          <button type="button" id="downloadIcsBtn" class="modal-btn modal-btn-secondary">
+            <span>Apple / Outlook Calendar (.ics)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

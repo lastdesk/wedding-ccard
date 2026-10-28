@@ -1,0 +1,1249 @@
+:root {
+  /* Centered Around #79BD9A Soft Jade Palette */
+  --lav-deep: #79BD9A;
+  --lav-mid: #96CEB1;
+  --lav-soft: #CBEAD8;
+  --lav-whisper: #E3F3EA;
+  --celadon-highlight: #A8DBA8;
+  --blush-white: #F4FAF6;
+  --accent-grad-end: #4D8C6D;
+  --pill-dark-bg: rgba(77, 140, 109, 0.88);
+  --arch-glow-1: rgba(244, 250, 246, 0.88);
+  --arch-glow-2: rgba(203, 234, 216, 0.45);
+
+  /* Harmonized Deep Jade Typography & Contrast Shades */
+  --heading-color: #234F3B;
+  --plum-darker: #234F3B;
+  --plum-dark: #356B52;
+  --plum-muted: #528C70;
+  --card-bg: rgba(244, 250, 246, 0.95);
+  --shadow-soft: 0 12px 32px rgba(121, 189, 154, 0.22);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background-color: #1A3A2B;
+  color: var(--plum-darker);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body.locked-scroll {
+  overflow: hidden;
+  height: 100dvh;
+}
+
+/* Mobile-First Shell (Full screen on mobile, centered phone viewport on desktop) */
+.mobile-shell {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  background: var(--blush-white);
+  box-shadow: 0 0 60px rgba(20, 14, 34, 0.65);
+  overflow: hidden;
+}
+
+/* Replay Button for Prototyping */
+.replay-btn {
+  position: fixed;
+  top: 14px;
+  right: max(14px, calc(50vw - 200px));
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--lav-mid);
+  background: var(--pill-dark-bg);
+  backdrop-filter: blur(8px);
+  color: var(--blush-white);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.replay-btn:hover {
+  transform: translateY(-1px);
+}
+
+.hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ==========================================
+   STAGE 1: STAMPED ENVELOPE OVERLAY (Sketch 1)
+   ========================================== */
+.envelope-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  height: 100dvh;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+  transition: visibility 0.9s ease;
+}
+
+.envelope-overlay.opened {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  background: linear-gradient(135deg, var(--blush-white) 0%, var(--lav-whisper) 52%, var(--lav-soft) 100%);
+  box-shadow: inset 0 0 40px rgba(153, 143, 184, 0.2);
+  transition: transform 1.15s cubic-bezier(0.65, 0, 0.25, 1), opacity 0.9s ease 0.3s;
+  overflow: hidden;
+}
+
+.paper-pattern {
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(153, 143, 184, 0.38);
+  background-image: radial-gradient(rgba(153, 143, 184, 0.2) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+
+.envelope-left {
+  left: 0;
+  transform-origin: left center;
+  border-right: 2px solid var(--lav-mid);
+  box-shadow: 6px 0 18px rgba(59, 49, 84, 0.16);
+}
+
+.envelope-right {
+  right: 0;
+  transform-origin: right center;
+  border-left: 2px solid var(--lav-mid);
+  box-shadow: -6px 0 18px rgba(59, 49, 84, 0.16);
+}
+
+/* Vertical center seam double-line matching Sketch 1 */
+.seam-trim {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  background: linear-gradient(90deg, rgba(153, 143, 184, 0.35), var(--blush-white), rgba(153, 143, 184, 0.35));
+}
+
+.seam-trim-left {
+  right: 3px;
+  border-left: 1.5px solid rgba(153, 143, 184, 0.55);
+}
+
+.seam-trim-right {
+  left: 3px;
+  border-right: 1.5px solid rgba(153, 143, 184, 0.55);
+}
+
+/* Open state for Envelope Flaps */
+.envelope-overlay.opening .envelope-left {
+  transform: rotateY(-105deg) translateX(-15%);
+  opacity: 0;
+}
+
+.envelope-overlay.opening .envelope-right {
+  transform: rotateY(105deg) translateX(15%);
+  opacity: 0;
+}
+
+/* Red Wax Seal Button in Center */
+.wax-seal-btn {
+  position: relative;
+  z-index: 5;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.45s ease;
+}
+
+.wax-seal-outer {
+  width: 138px;
+  height: 138px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: sealPulse 2.4s infinite ease-in-out;
+}
+
+.wax-seal-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.tap-hint {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--plum-darker);
+  background: var(--blush-white);
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--lav-mid);
+  box-shadow: 0 4px 12px rgba(153, 143, 184, 0.22);
+  animation: fadePulse 2s infinite ease-in-out;
+}
+
+.envelope-overlay.opening .wax-seal-btn {
+  transform: scale(1.28) rotate(8deg);
+  opacity: 0;
+}
+
+@keyframes sealPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+
+@keyframes fadePulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+
+/* ==========================================
+   PAGE SECTIONS & SCROLL CONTAINER
+   ========================================== */
+.invitation-scroll {
+  width: 100%;
+}
+
+.page-section {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 18px;
+}
+
+/* ==========================================
+   PAGE 1: CURTAIN OPENING & GARDEN HERO (Sketch 2)
+   ========================================== */
+.hero-garden-section {
+  padding: 0;
+  height: 100dvh;
+  min-height: 640px;
+  justify-content: space-between;
+  overflow: hidden;
+  background: var(--lav-whisper);
+}
+
+.garden-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transform: scale(1.05);
+  transition: transform 2.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-garden-section.curtains-parted .garden-backdrop {
+  transform: scale(1);
+}
+
+/* Unified SVG (768x1376) containing both the garden painting and the fountain water animation */
+.garden-scene-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Pixel-locked Fountain Water Animations */
+.water-jet-top {
+  stroke-dasharray: 10 8;
+  animation: jetUp 0.55s linear infinite;
+}
+
+.water-arc {
+  stroke-dasharray: 18 10;
+  animation: arcFlow 0.75s linear infinite;
+}
+
+.cascade-drop {
+  stroke: url(#waterCascadeGrad);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.c-fast {
+  stroke-dasharray: 14 12;
+  animation: dropFall 0.65s linear infinite;
+}
+
+.c-med {
+  stroke-dasharray: 18 14;
+  animation: dropFall 0.85s linear infinite;
+}
+
+.c-slow {
+  stroke-dasharray: 12 14;
+  animation: dropFall 1.05s linear infinite;
+}
+
+.canal-jet {
+  stroke: #ffffff;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-dasharray: 12 8;
+  animation: jetUp 0.6s linear infinite;
+}
+
+.pool-ripple {
+  fill: none;
+  stroke: rgba(254, 244, 255, 0.78);
+  stroke-width: 1.6;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.pr-1 {
+  animation: poolRipplePulse 2.4s ease-out infinite;
+}
+
+.pr-2 {
+  animation: poolRipplePulse 2.4s ease-out 0.8s infinite;
+}
+
+.pr-3 {
+  animation: poolRipplePulse 2.4s ease-out 1.6s infinite;
+}
+
+.mist-bubble {
+  fill: var(--blush-white);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.m-1 {
+  animation: mistBounce 1.4s ease-in-out infinite;
+}
+
+.m-2 {
+  animation: mistBounce 1.4s ease-in-out 0.45s infinite;
+}
+
+.m-3 {
+  animation: mistBounce 1.4s ease-in-out 0.9s infinite;
+}
+
+@keyframes jetUp {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 36; }
+}
+
+@keyframes arcFlow {
+  from { stroke-dashoffset: 28; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes dropFall {
+  from { stroke-dashoffset: 32; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes poolRipplePulse {
+  0% { transform: scale(0.92); opacity: 0.85; }
+  70% { transform: scale(1.04); opacity: 0.45; }
+  100% { transform: scale(1.08); opacity: 0; }
+}
+
+@keyframes mistBounce {
+  0%, 100% { transform: translateY(0) scale(0.8); opacity: 0.35; }
+  50% { transform: translateY(-7px) scale(1.3); opacity: 0.95; }
+}
+
+.garden-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sparkle-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--blush-white) 0%, var(--lav-soft) 60%, transparent 100%);
+  opacity: 0;
+  animation: floatSparkle 4.5s infinite ease-in-out;
+}
+
+@keyframes floatSparkle {
+  0%, 100% { transform: translateY(0) scale(0.7); opacity: 0.15; }
+  50% { transform: translateY(-18px) scale(1.25); opacity: 0.88; }
+}
+
+/* Curtain Stage Overlay */
+.curtain-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.curtain-valance {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  z-index: 12;
+  filter: drop-shadow(0 6px 12px rgba(59, 49, 84, 0.28));
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.valance-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.curtain-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 68%;
+  z-index: 11;
+  filter: drop-shadow(0 0 18px rgba(59, 49, 84, 0.32));
+  transition: transform 1.75s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.curtain-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Initially curtains are closed across the center */
+.curtain-left {
+  left: 0;
+  transform: translateX(0%) scaleX(1.18);
+  transform-origin: left top;
+}
+
+.curtain-right {
+  right: 0;
+  transform: translateX(0%) scaleX(1.18);
+  transform-origin: right top;
+}
+
+/* When curtains open, they part gracefully while framing the sides like Sketch 2 */
+.curtain-stage.curtains-open .curtain-left {
+  transform: translateX(-68%) scaleX(0.82);
+}
+
+.curtain-stage.curtains-open .curtain-right {
+  transform: translateX(68%) scaleX(0.82);
+}
+
+/* Hero Typography Positioned in the Upper Arch */
+.hero-content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 64px 24px 18px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 1.1s ease 0.45s, transform 1.1s ease 0.45s;
+  pointer-events: none;
+}
+
+.hero-garden-section.curtains-parted .hero-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-top-arch-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 280px;
+  padding: 10px 16px 14px;
+  border-radius: 26px;
+  background: radial-gradient(
+    ellipse at center,
+    var(--arch-glow-1) 0%,
+    var(--arch-glow-2) 68%,
+    transparent 100%
+  );
+}
+
+.bismillah-header {
+  margin-bottom: 4px;
+}
+
+.bismillah-arabic {
+  font-family: 'Amiri', serif;
+  font-size: 1.35rem;
+  color: var(--heading-color);
+  line-height: 1.25;
+  text-shadow: 0 1px 8px var(--blush-white);
+}
+
+.bismillah-english {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.76rem;
+  color: var(--plum-dark);
+  margin-top: 1px;
+}
+
+/* Names: Aeman weds Aquib tucked neatly inside the upper arch */
+.couple-names-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.bride-groom-name {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3.15rem;
+  font-weight: 400;
+  color: var(--heading-color);
+  line-height: 0.96;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px var(--blush-white), 0 1px 3px rgba(217, 107, 98, 0.35);
+}
+
+.weds-script {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: var(--lav-deep);
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  margin: 1px 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.weds-script::before,
+.weds-script::after {
+  content: "";
+  width: 22px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--lav-deep), transparent);
+}
+
+.scroll-cue {
+  pointer-events: auto;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  text-decoration: none;
+  color: var(--blush-white);
+  background: var(--pill-dark-bg);
+  backdrop-filter: blur(6px);
+  padding: 7px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--lav-mid);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(35, 79, 59, 0.25);
+}
+
+.scroll-chevron {
+  font-size: 0.88rem;
+  animation: bounceDown 1.6s infinite;
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ==========================================
+   SHARED SECTION CARD STYLING
+   ========================================== */
+.section-card {
+  width: 100%;
+  background: var(--card-bg);
+  border: 1.5px solid var(--lav-mid);
+  border-radius: 28px;
+  padding: 32px 20px;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-card::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid var(--lav-soft);
+  border-radius: 22px;
+  pointer-events: none;
+}
+
+.ornament-divider {
+  color: var(--lav-deep);
+  font-size: 0.95rem;
+  letter-spacing: 0.35em;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.75rem;
+  font-weight: 400;
+  color: var(--heading-color);
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 3px rgba(217, 107, 98, 0.25);
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  color: var(--plum-muted);
+  margin-top: 6px;
+  max-width: 285px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.45;
+}
+
+/* ==========================================
+   PAGE 2: SCRATCH TO REVEAL HEART SECTION
+   ========================================== */
+.scratch-section {
+  background: radial-gradient(circle at top, var(--blush-white) 0%, var(--lav-whisper) 55%, var(--lav-soft) 100%);
+}
+
+.scratch-heart-wrapper {
+  position: relative;
+  width: 300px;
+  height: 280px;
+  margin: 22px auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.heart-border-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 18px rgba(153, 143, 184, 0.35));
+}
+
+.heart-clip-container {
+  position: relative;
+  width: 300px;
+  height: 280px;
+  clip-path: url(#heartClipPath);
+  -webkit-clip-path: url(#heartClipPath);
+  background: linear-gradient(145deg, var(--blush-white) 0%, var(--lav-whisper) 55%, var(--lav-soft) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart-revealed-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 32px 44px;
+  text-align: center;
+  z-index: 1;
+}
+
+.reveal-sparkle {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--lav-deep);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.reveal-day {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-style: italic;
+  color: var(--plum-dark);
+}
+
+.reveal-date {
+  font-family: 'Cinzel', serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin: 2px 0;
+  letter-spacing: 0.03em;
+}
+
+.reveal-year {
+  font-family: 'Cinzel', serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--lav-deep);
+}
+
+.reveal-hijri {
+  font-size: 0.75rem;
+  color: var(--plum-muted);
+  margin-top: 4px;
+}
+
+#scratchCanvas {
+  position: absolute;
+  inset: 0;
+  width: 300px;
+  height: 280px;
+  z-index: 3;
+  cursor: grab;
+  touch-action: none;
+  transition: opacity 0.65s ease;
+}
+
+#scratchCanvas.scratched-complete {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scratch-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--plum-muted);
+  margin-bottom: 18px;
+}
+
+.quick-reveal-link {
+  background: none;
+  border: none;
+  color: var(--lav-deep);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.save-date-actions {
+  margin-top: 6px;
+}
+
+.btn-save-date {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  border: 1.5px solid var(--lav-mid);
+  background: linear-gradient(135deg, var(--lav-deep) 0%, var(--accent-grad-end) 100%);
+  color: var(--blush-white);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(153, 143, 184, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-save-date:hover,
+.btn-save-date:active {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(153, 143, 184, 0.48);
+}
+
+/* ==========================================
+   PAGE 3: COUNTDOWN TO FOREVER IN BOXES (Sketch 3)
+   ========================================== */
+.countdown-section {
+  background: linear-gradient(180deg, var(--lav-soft) 0%, var(--lav-whisper) 100%);
+}
+
+.countdown-boxes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 26px 0 24px;
+}
+
+.countdown-box {
+  background: linear-gradient(180deg, var(--blush-white) 0%, var(--lav-whisper) 100%);
+  border: 2px solid var(--lav-mid);
+  border-radius: 14px;
+  padding: 16px 6px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(153, 143, 184, 0.16), inset 0 1px 0 #ffffff;
+}
+
+.countdown-number {
+  font-family: 'Cinzel', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--plum-darker);
+  line-height: 1.1;
+}
+
+.countdown-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--lav-deep);
+  margin-top: 6px;
+}
+
+/* Rectangular Calendar Button matching Sketch 3 */
+.btn-calendar-sketch {
+  width: 100%;
+  max-width: 280px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 2px solid var(--lav-deep);
+  background: linear-gradient(135deg, var(--blush-white) 0%, var(--lav-soft) 100%);
+  color: var(--plum-darker);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(153, 143, 184, 0.22);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-calendar-sketch:hover,
+.btn-calendar-sketch:active {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--lav-whisper) 0%, var(--lav-mid) 100%);
+}
+
+/* ==========================================
+   PAGE 4: TIMELINE OF EVENTS
+   ========================================== */
+.timeline-section {
+  background: radial-gradient(circle at center, var(--blush-white) 0%, var(--lav-soft) 100%);
+}
+
+.timeline-track {
+  position: relative;
+  margin-top: 26px;
+  padding-left: 28px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.timeline-track::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 11px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--lav-mid) 0%, var(--lav-deep) 50%, var(--lav-mid) 100%);
+}
+
+.timeline-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.timeline-badge {
+  position: absolute;
+  left: -28px;
+  top: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--blush-white);
+  border: 2px solid var(--lav-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  box-shadow: 0 2px 8px rgba(153, 143, 184, 0.25);
+  z-index: 2;
+}
+
+.timeline-card {
+  width: 100%;
+  background: var(--blush-white);
+  border: 1px solid var(--lav-mid);
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: 0 4px 14px rgba(153, 143, 184, 0.12);
+}
+
+.timeline-item-featured .timeline-card {
+  background: linear-gradient(135deg, var(--blush-white) 0%, var(--lav-whisper) 60%, var(--lav-soft) 100%);
+  border: 1.5px solid var(--lav-deep);
+  box-shadow: 0 8px 20px rgba(153, 143, 184, 0.25);
+}
+
+.timeline-date-pill {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--plum-dark);
+  background: var(--lav-soft);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 6px;
+}
+
+.featured-pill {
+  background: var(--lav-deep);
+  color: var(--blush-white);
+}
+
+.timeline-event-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.95rem;
+  font-weight: 400;
+  color: var(--heading-color);
+  line-height: 1.1;
+}
+
+.timeline-event-desc {
+  font-size: 0.82rem;
+  color: var(--plum-muted);
+  line-height: 1.4;
+  margin: 4px 0 8px;
+}
+
+.timeline-time,
+.timeline-venue-tag {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--plum-dark);
+}
+
+/* ==========================================
+   PAGE 5: VENUES & ROUNDED SQUARE MAP
+   ========================================== */
+.venue-section {
+  background: linear-gradient(180deg, var(--lav-soft) 0%, var(--lav-mid) 100%);
+}
+
+/* Segmented Venue Tabs (Wedding vs Reception) */
+.venue-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 5px;
+  border-radius: 16px;
+  background: var(--lav-whisper);
+  border: 1px solid var(--lav-mid);
+}
+
+.venue-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 8px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.venue-tab-event {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--plum-muted);
+}
+
+.venue-tab-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--plum-darker);
+  margin-top: 2px;
+}
+
+.venue-tab.active {
+  background: linear-gradient(135deg, var(--lav-deep) 0%, var(--accent-grad-end) 100%);
+  border-color: var(--lav-mid);
+  box-shadow: 0 4px 12px rgba(153, 143, 184, 0.32);
+}
+
+.venue-tab.active .venue-tab-event {
+  color: var(--lav-soft);
+}
+
+.venue-tab.active .venue-tab-name {
+  color: var(--blush-white);
+}
+
+.venue-details-box {
+  margin: 14px 0 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--blush-white);
+  border: 1px solid var(--lav-mid);
+}
+
+.venue-event-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--lav-deep);
+  margin-bottom: 4px;
+}
+
+.venue-name {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.05rem;
+  font-weight: 400;
+  color: var(--heading-color);
+  line-height: 1.15;
+}
+
+.venue-address {
+  font-size: 0.82rem;
+  color: var(--plum-muted);
+  margin-top: 3px;
+}
+
+/* Rounded Square Map Container */
+.rounded-square-map-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 310px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 18px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 3px solid var(--lav-mid);
+  box-shadow: 0 10px 26px rgba(78, 66, 109, 0.18);
+  background: var(--lav-whisper);
+}
+
+.rounded-square-map {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.map-pin-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--pill-dark-bg);
+  backdrop-filter: blur(6px);
+  color: var(--blush-white);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid var(--lav-mid);
+  pointer-events: none;
+}
+
+.btn-directions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--lav-deep) 0%, var(--accent-grad-end) 100%);
+  color: var(--blush-white);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: 1px solid var(--lav-mid);
+  box-shadow: 0 6px 16px rgba(153, 143, 184, 0.32);
+  transition: transform 0.2s ease;
+}
+
+.btn-directions:hover {
+  transform: translateY(-2px);
+}
+
+.invitation-footer {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--lav-mid);
+}
+
+.dua-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--plum-darker);
+}
+
+.dua-ref {
+  font-size: 0.75rem;
+  color: var(--plum-muted);
+  margin-top: 2px;
+}
+
+.couple-monogram-footer {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  color: var(--lav-deep);
+  margin-top: 12px;
+  letter-spacing: 0.08em;
+}
+
+/* ==========================================
+   CALENDAR MODAL SHEET
+   ========================================== */
+.calendar-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(38, 31, 54, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: opacity 0.25s ease;
+}
+
+.calendar-modal-sheet {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  background: var(--blush-white);
+  border-top: 2px solid var(--lav-deep);
+  border-radius: 28px 28px 0 0;
+  padding: 28px 24px 34px;
+  text-align: center;
+  box-shadow: 0 -10px 30px rgba(38, 31, 54, 0.35);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--lav-mid);
+  background: var(--lav-whisper);
+  color: var(--plum-darker);
+  cursor: pointer;
+}
+
+.modal-icon {
+  font-size: 2rem;
+  margin-bottom: 6px;
+}
+
+.modal-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.25rem;
+  font-weight: 400;
+  color: var(--heading-color);
+}
+
+.modal-subtitle {
+  font-size: 0.85rem;
+  color: var(--plum-muted);
+  margin: 4px 0 20px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-btn {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-btn-primary {
+  background: linear-gradient(135deg, var(--lav-deep) 0%, var(--accent-grad-end) 100%);
+  color: var(--blush-white);
+  border: 1px solid var(--lav-mid);
+}
+
+.modal-btn-secondary {
+  background: var(--lav-whisper);
+  color: var(--plum-darker);
+  border: 1.5px solid var(--lav-mid);
+}
