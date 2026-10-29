@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const waxSealBtn = document.getElementById('waxSealBtn');
   const curtainStage = document.getElementById('curtainStage');
   const heroSection = document.getElementById('heroSection');
-  const replayBtn = document.getElementById('replayBtn');
   const gardenParticles = document.getElementById('gardenParticles');
 
   // ==========================================
@@ -48,24 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Step 3: Hide envelope overlay completely after transition
     setTimeout(() => {
       envelopeOverlay.classList.add('opened');
-      replayBtn.classList.remove('hidden');
     }, 1350);
   }
 
-  function replayIntro() {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    body.classList.add('locked-scroll');
-    replayBtn.classList.add('hidden');
-    curtainStage.classList.remove('curtains-open');
-    heroSection.classList.remove('curtains-parted');
-    envelopeOverlay.classList.remove('opened');
-    // Force reflow before removing 'opening'
-    void envelopeOverlay.offsetWidth;
-    envelopeOverlay.classList.remove('opening');
-  }
-
   waxSealBtn.addEventListener('click', openInvitation);
-  replayBtn.addEventListener('click', replayIntro);
 
   // ==========================================
   // 3. SCRATCH TO REVEAL HEART (HTML5 CANVAS)
@@ -231,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cdMinutes = document.getElementById('cdMinutes');
   const cdSeconds = document.getElementById('cdSeconds');
 
-  const weddingTargetDate = new Date('2027-01-10T17:00:00').getTime();
+  const weddingTargetDate = new Date('2027-01-10T19:00:00').getTime();
 
   function updateCountdown() {
     const now = Date.now();
@@ -324,12 +309,12 @@ document.addEventListener('DOMContentLoaded', () => {
     location: 'Akka Garden Marriage Hall, Jamshedpur (https://maps.google.com/?q=22.841519,86.2030102)',
     description:
       'Assalamu Alaikum! Join us to celebrate the wedding of Aeman & Aquib.\n\n' +
-      '• Haldi: Friday, Jan 8, 2027\n' +
-      '• Mehndi: Saturday, Jan 9, 2027\n' +
-      '• Wedding (Nikah): Sunday, Jan 10, 2027 — Akka Garden Marriage Hall\n' +
-      '• Reception (Walima): Tuesday, Jan 12, 2027 — Madina Garden',
-    startUTC: '20270110T170000',
-    endUTC: '20270110T223000'
+      '• Haldi: Friday, Jan 8, 2027 (6:00 PM Onwards)\n' +
+      '• Mehndi: Saturday, Jan 9, 2027 (6:00 PM Onwards)\n' +
+      '• Wedding (Nikah): Sunday, Jan 10, 2027 (7:00 PM Onwards) — Akka Garden Marriage Hall\n' +
+      '• Reception (Walima): Tuesday, Jan 12, 2027 (7:00 PM Onwards) — Madina Garden',
+    startUTC: '20270110T190000',
+    endUTC: '20270110T233000'
   };
 
   const gCalUrl = new URL('https://calendar.google.com/calendar/render');
@@ -348,8 +333,8 @@ document.addEventListener('DOMContentLoaded', () => {
     calendarModal.classList.add('hidden');
   }
 
-  saveDateBtnTop.addEventListener('click', openCalendarSheet);
-  saveDateBtnCountdown.addEventListener('click', openCalendarSheet);
+  if (saveDateBtnTop) saveDateBtnTop.addEventListener('click', openCalendarSheet);
+  if (saveDateBtnCountdown) saveDateBtnCountdown.addEventListener('click', openCalendarSheet);
   closeCalendarModal.addEventListener('click', closeCalendarSheet);
   calendarModal.addEventListener('click', (e) => {
     if (e.target === calendarModal) closeCalendarSheet();
