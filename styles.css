@@ -207,6 +207,40 @@ body.locked-scroll {
 }
 
 /* ==========================================
+   STAGE 1.5: FLORAL WIND VEIL & PERSISTENT WIND FLOWERS
+   ========================================== */
+.flower-intro-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 14;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 245, 247, 0.96) 0%, transparent 52%),
+    radial-gradient(circle at 82% 76%, rgba(203, 234, 216, 0.76) 0%, transparent 58%),
+    linear-gradient(160deg, #FFFDF9 0%, #F4FAF6 54%, #E3F3EA 100%);
+  opacity: 1;
+  transition: opacity 1.65s cubic-bezier(0.35, 0, 0.2, 1), visibility 0s linear 1.65s;
+}
+
+.flower-intro-veil.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.flower-wind-canvas {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  height: 100dvh;
+  z-index: 50;
+  pointer-events: none;
+  display: block;
+}
+
+/* ==========================================
    PAGE SECTIONS & SCROLL CONTAINER
    ========================================== */
 .invitation-scroll {
@@ -412,7 +446,7 @@ body.locked-scroll {
   width: 68%;
   z-index: 11;
   filter: drop-shadow(0 0 18px rgba(59, 49, 84, 0.32));
-  transition: transform 1.75s cubic-bezier(0.25, 1, 0.3, 1);
+  transition: transform 2.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .curtain-svg {

@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
   const envelopeOverlay = document.getElementById('envelopeOverlay');
   const waxSealBtn = document.getElementById('waxSealBtn');
+  const flowerIntroVeil = document.getElementById('flowerIntroVeil');
+  const flowerWindCanvas = document.getElementById('flowerWindCanvas');
   const curtainStage = document.getElementById('curtainStage');
   const heroSection = document.getElementById('heroSection');
   const gardenParticles = document.getElementById('gardenParticles');
@@ -29,25 +31,371 @@ document.addEventListener('DOMContentLoaded', () => {
   createGardenSparkles();
 
   // ==========================================
-  // 2. ENVELOPE & CURTAIN OPENING SEQUENCE
+  // 2. ENVELOPE -> FLOWERS IN WIND CROSSFADE -> CURTAINS & AMBIENT FLOWERS THROUGHOUT
   // ==========================================
+  let flowerAnimFrame = null;
+  let flowerParticles = [];
+  let windRibbons = [];
+  let fwWidth = 0;
+  let fwHeight = 0;
+  let burstPruned = false;
+  let flowerElapsedOffset = 0;
+  function getScrollY() {
+    return window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  }
+  let lastScrollY = getScrollY();
+  const fwCtx = flowerWindCanvas ? flowerWindCanvas.getContext('2d') : null;
+
+  const PERSISTENT_FLOWER_COUNT = 10;
+  const TOTAL_OPENING_FLOWERS = 56;
+  const FADE_START_MS = 1800;
+  const FADE_DURATION_MS = 1650;
+
+  const blossomPalettes = [
+    { outer: '#FFD6E0', inner: '#F497AA', center: '#D97706' }, // Sakura Blush
+    { outer: '#FFFDF8', inner: '#FDE2E4', center: '#EAB308' }, // Ivory Jasmine
+    { outer: '#FFE5D9', inner: '#F7A992', center: '#D97706' }  // Soft Peach Blossom
+  ];
+
+  const petalPalettes = [
+    { tip: '#FECDD3', base: '#FB7185' }, // Rose Blush
+    { tip: '#FBCFE8', base: '#F472B6' }, // Pink Petal
+    { tip: '#FFFBEB', base: '#FDE68A' }, // Cream Ivory
+    { tip: '#FFE4E6', base: '#FDA4AF' }  // Delicate Coral
+  ];
+
+  function resizeFlowerCanvas() {
+    if (!flowerWindCanvas || !fwCtx) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    fwWidth = flowerWindCanvas.clientWidth || 430;
+    fwHeight = flowerWindCanvas.clientHeight || window.innerHeight;
+    flowerWindCanvas.width = Math.round(fwWidth * dpr);
+    flowerWindCanvas.height = Math.round(fwHeight * dpr);
+    fwCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function createFlowerParticle(initialSpread = false, persistent = false, gentleMode = false) {
+    const roll = Math.random();
+    const type = persistent
+      ? (roll < 0.42 ? 'blossom' : 'petal')
+      : (roll < 0.38 ? 'blossom' : roll < 0.86 ? 'petal' : 'leaf');
+    const depth = 0.55 + Math.random() * 0.62;
+
+    let size;
+    if (type === 'blossom') {
+      size = (10.5 + Math.random() * 8.5) * depth;
+    } else if (type === 'petal') {
+      size = (7.5 + Math.random() * 6.5) * depth;
+    } else {
+      size = (7.5 + Math.random() * 5.5) * depth;
+    }
+
+    let x, y;
+    if (initialSpread) {
+      x = -60 + Math.random() * (fwWidth * 0.98);
+      y = persistent
+        ? -40 + Math.random() * (fwHeight * 0.9)
+        : -fwHeight * 0.65 + Math.random() * (fwHeight * 0.92);
+    } else if (gentleMode) {
+      if (Math.random() < 0.76) {
+        x = -55 + Math.random() * (fwWidth * 1.02);
+        y = -28 - Math.random() * 40;
+      } else {
+        x = -35 - Math.random() * 25;
+        y = 15 + Math.random() * (fwHeight * 0.55);
+      }
+    } else if (Math.random() < 0.72) {
+      x = -90 + Math.random() * (fwWidth * 0.9);
+      y = -35 - Math.random() * 45;
+    } else {
+      x = -40 - Math.random() * 35;
+      y = -20 + Math.random() * (fwHeight * 0.55);
+    }
+
+    return {
+      type,
+      persistent,
+      x,
+      y,
+      size,
+      depth,
+      opacity: persistent ? 0.68 + Math.random() * 0.22 : 0.74 + Math.random() * 0.24,
+      baseVx: (1.1 + Math.random() * 1.4) * depth,
+      baseVy: (2.05 + Math.random() * 2.0) * depth,
+      angle: Math.random() * Math.PI * 2,
+      spinSpeed: (Math.random() - 0.5) * 0.042,
+      tumble: Math.random() * Math.PI * 2,
+      tumbleSpeed: 0.028 + Math.random() * 0.042,
+      swayFreq: 0.002 + Math.random() * 0.0024,
+      swayAmp: 0.55 + Math.random() * 1.05,
+      phase: Math.random() * Math.PI * 2,
+      blossomColors: blossomPalettes[Math.floor(Math.random() * blossomPalettes.length)],
+      petalColors: petalPalettes[Math.floor(Math.random() * petalPalettes.length)]
+    };
+  }
+
+  function initFlowerScene() {
+    resizeFlowerCanvas();
+    flowerParticles = [];
+    for (let i = 0; i < TOTAL_OPENING_FLOWERS; i++) {
+      const isPersistent = i < PERSISTENT_FLOWER_COUNT;
+      flowerParticles.push(createFlowerParticle(true, isPersistent, false));
+    }
+
+    windRibbons = [];
+    for (let i = 0; i < 6; i++) {
+      windRibbons.push({
+        x: -180 + Math.random() * fwWidth,
+        y: (fwHeight / 6) * i + 40 + Math.random() * 50,
+        len: 130 + Math.random() * 90,
+        speed: 3.4 + Math.random() * 2.2,
+        amp: 14 + Math.random() * 14,
+        alpha: 0.14 + Math.random() * 0.14
+      });
+    }
+    drawFlowerFrame(0, 0);
+  }
+
+  function drawBlossom(ctx, r, colors) {
+    for (let i = 0; i < 5; i++) {
+      ctx.save();
+      ctx.rotate((i * Math.PI * 2) / 5);
+      const grad = ctx.createLinearGradient(0, 0, 0, -r);
+      grad.addColorStop(0, colors.inner);
+      grad.addColorStop(0.55, colors.outer);
+      grad.addColorStop(1, '#FFFFFF');
+      ctx.fillStyle = grad;
+
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(-r * 0.52, -r * 0.28, -r * 0.58, -r * 0.88, -r * 0.12, -r);
+      ctx.lineTo(0, -r * 0.86);
+      ctx.lineTo(r * 0.12, -r);
+      ctx.bezierCurveTo(r * 0.58, -r * 0.88, r * 0.52, -r * 0.28, 0, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    ctx.fillStyle = colors.center;
+    ctx.beginPath();
+    ctx.arc(0, 0, r * 0.16, 0, Math.PI * 2);
+    ctx.fill();
+
+    for (let i = 0; i < 5; i++) {
+      const a = (i * Math.PI * 2) / 5 + 0.3;
+      ctx.beginPath();
+      ctx.arc(Math.cos(a) * r * 0.26, Math.sin(a) * r * 0.26, r * 0.06, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawSinglePetal(ctx, r, colors) {
+    const grad = ctx.createLinearGradient(0, r * 0.6, 0, -r);
+    grad.addColorStop(0, colors.base);
+    grad.addColorStop(0.7, colors.tip);
+    grad.addColorStop(1, '#FFFFFF');
+    ctx.fillStyle = grad;
+
+    ctx.beginPath();
+    ctx.moveTo(0, r * 0.65);
+    ctx.bezierCurveTo(-r * 0.78, r * 0.15, -r * 0.72, -r * 0.85, 0, -r);
+    ctx.bezierCurveTo(r * 0.72, -r * 0.85, r * 0.78, r * 0.15, 0, r * 0.65);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawSoftLeaf(ctx, r) {
+    const grad = ctx.createLinearGradient(0, r * 0.7, 0, -r * 0.9);
+    grad.addColorStop(0, '#589A79');
+    grad.addColorStop(0.55, '#79BD9A');
+    grad.addColorStop(1, '#CBEAD8');
+    ctx.fillStyle = grad;
+
+    ctx.beginPath();
+    ctx.moveTo(0, r * 0.8);
+    ctx.quadraticCurveTo(-r * 0.55, 0, 0, -r * 0.9);
+    ctx.quadraticCurveTo(r * 0.55, 0, 0, r * 0.8);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(244, 250, 246, 0.6)';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(0, r * 0.65);
+    ctx.lineTo(0, -r * 0.65);
+    ctx.stroke();
+  }
+
+  function drawFlowerFrame(elapsed, dt) {
+    if (!fwCtx) return;
+    fwCtx.clearRect(0, 0, fwWidth, fwHeight);
+
+    const currentScrollY = getScrollY();
+    const scrollDelta = dt > 0 ? currentScrollY - lastScrollY : 0;
+    lastScrollY = currentScrollY;
+
+    // Smooth crossfade progress (0 during intro gust -> 1 once curtains have emerged)
+    const rawFade = Math.max(0, Math.min(1, (elapsed - FADE_START_MS) / FADE_DURATION_MS));
+    const smoothFade = rawFade * rawFade * (3 - 2 * rawFade);
+    const burstAlpha = 1 - smoothFade;
+
+    // Ease wind from brisk opening gust down to a soft romantic breeze for the persistent flowers
+    const windScale = 1 - 0.52 * smoothFade;
+    const dropScale = 1 - 0.34 * smoothFade;
+    const windGust = (1.45 + 0.75 * Math.sin(elapsed * 0.003) + 0.35 * Math.cos(elapsed * 0.0068)) * windScale;
+
+    // Subtle wispy wind-current ribbons during the opening wind gust (fade out smoothly during crossfade)
+    if (burstAlpha > 0.01) {
+      fwCtx.save();
+      fwCtx.lineCap = 'round';
+      for (const rib of windRibbons) {
+        if (dt > 0) {
+          rib.x += rib.speed * windGust * 0.75 * dt;
+          rib.y += rib.speed * 0.42 * dt;
+          if (rib.x - rib.len > fwWidth + 40 || rib.y > fwHeight + 60) {
+            rib.x = -rib.len - Math.random() * 80;
+            rib.y = -30 + Math.random() * (fwHeight * 0.75);
+          }
+        }
+        const grad = fwCtx.createLinearGradient(rib.x, rib.y, rib.x + rib.len, rib.y + rib.len * 0.38);
+        grad.addColorStop(0, 'rgba(121, 189, 154, 0)');
+        grad.addColorStop(0.5, `rgba(121, 189, 154, ${(rib.alpha * burstAlpha).toFixed(3)})`);
+        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        fwCtx.strokeStyle = grad;
+        fwCtx.lineWidth = 1.6;
+        fwCtx.beginPath();
+        fwCtx.moveTo(rib.x, rib.y);
+        fwCtx.bezierCurveTo(
+          rib.x + rib.len * 0.35,
+          rib.y - rib.amp,
+          rib.x + rib.len * 0.7,
+          rib.y + rib.len * 0.35 + rib.amp,
+          rib.x + rib.len,
+          rib.y + rib.len * 0.36
+        );
+        fwCtx.stroke();
+      }
+      fwCtx.restore();
+    } else if (!burstPruned) {
+      // Keep only the persistent first-screen flowers once the opening burst has faded out
+      flowerParticles = flowerParticles.filter((item) => item.persistent);
+      burstPruned = true;
+    }
+
+    // Update & render flowers, petals, and leaves
+    for (let i = 0; i < flowerParticles.length; i++) {
+      const p = flowerParticles[i];
+      const alpha = p.persistent ? p.opacity : p.opacity * burstAlpha;
+      if (alpha <= 0.01) continue;
+
+      if (dt > 0) {
+        const flutterSway = Math.sin(elapsed * p.swayFreq + p.phase) * p.swayAmp;
+        const liftWave = Math.cos(elapsed * p.swayFreq * 1.3 + p.phase) * 0.42;
+
+        p.x += (p.baseVx * windGust + flutterSway) * dt;
+        // Move vertically with wind/gravity AND shift naturally with page scroll (with depth parallax)
+        p.y += (p.baseVy * dropScale + liftWave) * dt - scrollDelta * (0.88 + 0.24 * p.depth);
+        p.angle += p.spinSpeed * (0.65 + 0.35 * windScale) * dt;
+        p.tumble += p.tumbleSpeed * (0.65 + 0.35 * windScale) * dt;
+
+        const spanY = fwHeight + 90;
+        const spanX = fwWidth + 92;
+
+        if (smoothFade > 0.5) {
+          // Wrap seamlessly in 2D space so flowers travel naturally with both wind and scroll
+          if (p.x > fwWidth + 46) {
+            p.x = -46 + ((p.x - (fwWidth + 46)) % spanX);
+          } else if (p.x < -46) {
+            p.x = fwWidth + 46 - ((-46 - p.x) % spanX);
+          }
+
+          if (p.y > fwHeight + 45) {
+            p.y = -45 + ((p.y - (fwHeight + 45)) % spanY);
+            p.x = -25 + Math.random() * fwWidth;
+          } else if (p.y < -45) {
+            p.y = fwHeight + 45 - ((-45 - p.y) % spanY);
+            p.x = -25 + Math.random() * fwWidth;
+          }
+        } else if (p.y > fwHeight + 45 || p.x > fwWidth + 52) {
+          if (p.persistent || burstAlpha > 0.15) {
+            flowerParticles[i] = createFlowerParticle(false, p.persistent, false);
+          }
+          continue;
+        }
+      }
+
+      fwCtx.save();
+      fwCtx.globalAlpha = alpha;
+      fwCtx.translate(p.x, p.y);
+      fwCtx.rotate(p.angle);
+
+      const tiltScale = p.type === 'blossom'
+        ? 0.68 + 0.32 * Math.abs(Math.cos(p.tumble))
+        : 0.26 + 0.74 * Math.abs(Math.cos(p.tumble));
+      fwCtx.scale(1, tiltScale);
+
+      if (p.type === 'blossom') {
+        drawBlossom(fwCtx, p.size, p.blossomColors);
+      } else if (p.type === 'petal') {
+        drawSinglePetal(fwCtx, p.size, p.petalColors);
+      } else {
+        drawSoftLeaf(fwCtx, p.size);
+      }
+      fwCtx.restore();
+    }
+  }
+
+  function startFlowerWindAnimation() {
+    if (!fwCtx || flowerAnimFrame) return;
+    let lastTime = performance.now();
+
+    function loop(now) {
+      const dt = Math.min(32, now - lastTime) / 16.667;
+      flowerElapsedOffset += now - lastTime;
+      lastTime = now;
+      drawFlowerFrame(flowerElapsedOffset, dt);
+      flowerAnimFrame = requestAnimationFrame(loop);
+    }
+
+    flowerAnimFrame = requestAnimationFrame(loop);
+  }
+
+  initFlowerScene();
+  window.addEventListener('resize', () => {
+    resizeFlowerCanvas();
+    if (!flowerAnimFrame) drawFlowerFrame(flowerElapsedOffset, 0);
+  });
+
   function openInvitation() {
     if (envelopeOverlay.classList.contains('opening')) return;
 
-    // Step 1: Break wax seal & swing open vertical envelope flaps
+    // Step 1: Break wax seal & swing open envelope flaps into the wind-blown flowers burst
     envelopeOverlay.classList.add('opening');
+    startFlowerWindAnimation();
 
-    // Step 2: Part the curtains to reveal the garden, fountain & names
+    // Step 2: Hide opened envelope flaps once swung out
+    setTimeout(() => {
+      envelopeOverlay.classList.add('opened');
+    }, 1200);
+
+    // Step 3: Begin smooth crossfade out of the floral veil & dense flower burst...
+    setTimeout(() => {
+      if (flowerIntroVeil) {
+        flowerIntroVeil.classList.add('fade-out');
+      }
+    }, FADE_START_MS);
+
+    // Step 4: ...while simultaneously fading in the curtain opening animation!
     setTimeout(() => {
       curtainStage.classList.add('curtains-open');
       heroSection.classList.add('curtains-parted');
-      body.classList.remove('locked-scroll');
-    }, 550);
+    }, FADE_START_MS + 250);
 
-    // Step 3: Hide envelope overlay completely after transition
+    // Step 5: Unlock page scroll as the garden & ongoing falling flowers settle in
     setTimeout(() => {
-      envelopeOverlay.classList.add('opened');
-    }, 1350);
+      body.classList.remove('locked-scroll');
+    }, FADE_START_MS + 900);
   }
 
   waxSealBtn.addEventListener('click', openInvitation);
