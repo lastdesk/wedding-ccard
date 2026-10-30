@@ -60,6 +60,80 @@ body.locked-scroll {
 }
 
 /* ==========================================
+   TOP-RIGHT STREAMING MUSIC MUTE BUTTON
+   ========================================== */
+.music-mute-btn {
+  position: fixed;
+  top: 14px;
+  right: max(14px, calc(50% - 215px + 14px));
+  z-index: 150;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--lav-deep);
+  background: rgba(244, 250, 246, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--heading-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(35, 79, 59, 0.2);
+  transition: transform 0.2s ease, background-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+.music-mute-btn:hover,
+.music-mute-btn:active {
+  transform: scale(1.06);
+}
+
+.music-mute-btn.is-playing {
+  animation: musicPulseRing 2.6s ease-in-out infinite;
+}
+
+.music-mute-btn.is-muted {
+  background: rgba(244, 250, 246, 0.78);
+  color: var(--plum-muted);
+  border-color: var(--lav-mid);
+}
+
+.music-icon {
+  width: 19px;
+  height: 19px;
+}
+
+.music-mute-btn.is-playing .icon-sound-off {
+  display: none;
+}
+
+.music-mute-btn.is-muted .icon-sound-on {
+  display: none;
+}
+
+.music-mute-btn.is-playing .wave-1 {
+  animation: soundWavePulse 1.4s ease-in-out infinite;
+}
+
+.music-mute-btn.is-playing .wave-2 {
+  animation: soundWavePulse 1.4s ease-in-out 0.35s infinite;
+}
+
+@keyframes musicPulseRing {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(35, 79, 59, 0.2), 0 0 0 0 rgba(121, 189, 154, 0.45);
+  }
+  50% {
+    box-shadow: 0 4px 14px rgba(35, 79, 59, 0.22), 0 0 0 6px rgba(121, 189, 154, 0);
+  }
+}
+
+@keyframes soundWavePulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+/* ==========================================
    STAGE 1: STAMPED ENVELOPE OVERLAY (Sketch 1)
    ========================================== */
 .envelope-overlay {

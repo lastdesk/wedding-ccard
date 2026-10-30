@@ -14,6 +14,36 @@
   <!-- Desktop Phone Wrapper for Mobile-First Preview -->
   <div class="mobile-shell" id="appShell">
 
+    <!-- Streaming Background Theme Audio (Autoplay + Loop) & Top-Right Mute Button -->
+    <audio
+      id="themeAudio"
+      src="https://pub-065a842b74134afab6cf962d879858be.r2.dev/Theme.mp3"
+      preload="auto"
+      loop
+      autoplay
+      playsinline>
+    </audio>
+    <button
+      type="button"
+      class="music-mute-btn is-playing"
+      id="musicMuteBtn"
+      aria-label="Mute background music"
+      aria-pressed="false"
+      title="Mute / Unmute Music">
+      <!-- Sound On Icon -->
+      <svg class="music-icon icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path class="sound-wave wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        <path class="sound-wave wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+      </svg>
+      <!-- Sound Muted Icon -->
+      <svg class="music-icon icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+      </svg>
+    </button>
+
     <!-- ==========================================
          STAGE 1: STAMPED ENVELOPE OVERLAY (Sketch 1)
          ========================================== -->

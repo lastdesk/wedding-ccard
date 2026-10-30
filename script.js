@@ -7,6 +7,92 @@ document.addEventListener('DOMContentLoaded', () => {
   const curtainStage = document.getElementById('curtainStage');
   const heroSection = document.getElementById('heroSection');
   const gardenParticles = document.getElementById('gardenParticles');
+  const themeAudio = document.getElementById('themeAudio');
+  const musicMuteBtn = document.getElementById('musicMuteBtn');
+
+  // ==========================================
+  // 0. STREAMING THEME AUDIO (AUTOPLAY, LOOP & MUTE)
+  // ==========================================
+  let userMuted = false;
+
+  function syncMuteButtonUI() {
+    if (!musicMuteBtn || !themeAudio) return;
+    const isSilent = userMuted || themeAudio.muted || themeAudio.paused;
+    musicMuteBtn.classList.toggle('is-muted', isSilent);
+    musicMuteBtn.classList.toggle('is-playing', !isSilent);
+    musicMuteBtn.setAttribute('aria-pressed', String(isSilent));
+    musicMuteBtn.setAttribute('aria-label', isSilent ? 'Unmute background music' : 'Mute background music');
+  }
+
+  function removeGestureUnlockListeners() {
+    ['click', 'touchend', 'keydown'].forEach((evt) => {
+      document.removeEventListener(evt, unlockAudioOnFirstGesture, true);
+    });
+  }
+
+  function tryPlayThemeAudio() {
+    if (!themeAudio || userMuted) return;
+    themeAudio.muted = false;
+    themeAudio.loop = true;
+    const playPromise = themeAudio.play();
+    if (playPromise && typeof playPromise.then === 'function') {
+      playPromise
+        .then(() => {
+          removeGestureUnlockListeners();
+          syncMuteButtonUI();
+        })
+        .catch(() => {
+          syncMuteButtonUI();
+        });
+    }
+  }
+
+  function unlockAudioOnFirstGesture(e) {
+    if (musicMuteBtn && musicMuteBtn.contains(e.target)) return;
+    if (userMuted) {
+      removeGestureUnlockListeners();
+      return;
+    }
+    if (themeAudio && themeAudio.paused) {
+      tryPlayThemeAudio();
+    } else {
+      removeGestureUnlockListeners();
+    }
+  }
+
+  if (themeAudio && musicMuteBtn) {
+    themeAudio.volume = 0.85;
+    themeAudio.loop = true;
+
+    // Fallback loop safety for mobile browsers
+    themeAudio.addEventListener('ended', () => {
+      themeAudio.currentTime = 0;
+      if (!userMuted) themeAudio.play().catch(() => {});
+    });
+    themeAudio.addEventListener('play', syncMuteButtonUI);
+    themeAudio.addEventListener('pause', syncMuteButtonUI);
+    themeAudio.addEventListener('volumechange', syncMuteButtonUI);
+
+    // Attempt immediate autoplay on load + register gesture fallback if browser waits for first tap
+    ['click', 'touchend', 'keydown'].forEach((evt) => {
+      document.addEventListener(evt, unlockAudioOnFirstGesture, true);
+    });
+    tryPlayThemeAudio();
+
+    musicMuteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (themeAudio.paused || themeAudio.muted || userMuted) {
+        userMuted = false;
+        themeAudio.muted = false;
+        tryPlayThemeAudio();
+      } else {
+        userMuted = true;
+        themeAudio.muted = true;
+        removeGestureUnlockListeners();
+        syncMuteButtonUI();
+      }
+    });
+  }
 
   // ==========================================
   // 1. FLOATING GARDEN SPARKLE PARTICLES
